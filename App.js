@@ -4,9 +4,13 @@ import { StyleSheet, View, Text } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
 import useFontLoader from "./hooks/useFontLoader";
 import useFirebase from "./hooks/useFirebaseAuth";
+import useFormValidator from "./hooks/useFormValidator";
+import firebaseConfig from "./config/firebase";
+import PasswordField from "./components/PasswordField";
 
 const emailRef = React.createRef();
 const passwordRef = React.createRef();
+const passwordConfirmRef = React.createRef();
 
 const styles = StyleSheet.create({
   container: {
@@ -41,31 +45,22 @@ const ErrorStatus = styled(Text)({
   padding: 10
 });
 
-// ad-hoc for poc
-const firebaseConfig = {
-  apiKey: "AIzaSyB0MYdD5HHnChxk8dFLAz_X8qNo3pd-Oy0",
-  authDomain: "dgtlmonkstudio-d95a8.firebaseapp.com",
-  databaseURL: "https://dgtlmonkstudio-d95a8.firebaseio.com",
-  projectId: "dgtlmonkstudio-d95a8",
-  storageBucket: "dgtlmonkstudio-d95a8.appspot.com",
-  messagingSenderId: "781702222550",
-  appId: "1:781702222550:web:c84beaceb2696fdad4af77",
-  measurementId: "G-3VFRK1ZG35"
-};
-
 const iosClientID =
   "com.googleusercontent.apps.781702222550-nb8vl5ggu9fgnh5l0ehejojkioggg0h9";
 
 export default function App() {
   const [email, setEmail] = React.useState();
   const [password, setPassword] = React.useState();
-  const [password2, setPassword2] = React.useState();
+  const [passwordConfirm, setpasswordConfirm] = React.useState();
   const [formType, setFormType] = React.useState("login");
   const [errors, setErrors] = React.useState({
     email: null,
-    password: null
+    password: null,
+    passwordConfirm: null
   });
+
   const [ready] = useFontLoader();
+  const { isValidEmail } = useFormValidator();
   const {
     isAuthenticated,
     signupUser,
@@ -88,7 +83,7 @@ export default function App() {
   validateForm = () => {
     let isValid = false;
 
-    if (!email) {
+    if (!email || !isValidEmail(email)) {
       setErrors({ ...errors, ...{ email: "invalid email" } });
       return isValid;
     }
@@ -97,6 +92,7 @@ export default function App() {
 
     if (!password) {
       setErrors({ ...errors, ...{ password: "invalid password" } });
+      passwordRef.current.focus();
       return isValid;
     }
 
@@ -106,10 +102,6 @@ export default function App() {
     return isValid;
   };
 
-  handleSignup = () => {
-    signupUser({ email, password });
-  };
-
   handleSignIn = () => {
     const hasError = false;
     if (validateForm()) {
@@ -117,9 +109,24 @@ export default function App() {
     }
   };
 
+  handleSignup = () => {
+    if (validateForm()) {
+      if (password !== passwordConfirm) {
+        setErrors({
+          ...errors,
+          ...{ passwordConfirm: "Password does not match " }
+        });
+        return;
+      }
+
+      signupUser({ email, password });
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Icon raised name="user" type="entypo" size={32} color={`#2089DC`} />
+
       <Text style={{ color: `red`, padding: 10 }}>
         {authError && authError.message}
       </Text>
@@ -130,7 +137,10 @@ export default function App() {
             containerStyle={{ width: `100%`, marginTop: 10 }}
             title="Sign out"
             type="solid"
-            onPress={() => signoutUser()}
+            onPress={() => {
+              setFormType("login");
+              signoutUser();
+            }}
           />
         </>
       )}
@@ -143,7 +153,7 @@ export default function App() {
               placeholder="email"
               label="E-mail"
               onChangeText={val => {
-                if (!val) {
+                if (!val || !isValidEmail(val)) {
                   setErrors({ ...errors, ...{ email: "invalid email" } });
                 } else {
                   setErrors({ ...errors, ...{ email: null } });
@@ -158,47 +168,57 @@ export default function App() {
               }}
             />
             <ErrorStatus>{errors.email}</ErrorStatus>
-            <Input
+            <PasswordField
               ref={passwordRef}
+              error={errors.password}
               onChangeText={val => {
                 if (!val) {
-                  setErrors({ ...errors, ...{ password: "invalid password" } });
+                  setErrors({
+                    ...errors,
+                    ...{ password: "invalid password" }
+                  });
                 } else {
                   setErrors({ ...errors, ...{ password: null } });
                 }
 
                 setPassword(val);
               }}
-              secureTextEntry={true}
-              placeholder="password"
-              label="Password"
-              containerStyle={{
-                marginBottom: 20
-              }}
             />
 
-            <ErrorStatus>{errors.password}</ErrorStatus>
             {formType != "login" && (
-              <Input
-                onChangeText={val => setPassword2(val)}
-                secureTextEntry={true}
-                placeholder="confirm password"
-                label="Confirm Password"
-              />
+              <>
+                <PasswordField
+                  label="Confirm Password"
+                  ref={passwordConfirmRef}
+                  error={errors.passwordConfirm}
+                  onChangeText={val => {
+                    if (!val) {
+                      setErrors({
+                        ...errors,
+                        ...{
+                          passwordConfirm: "Confirm password does not match"
+                        }
+                      });
+                    } else {
+                      setErrors({ ...errors, ...{ passwordConfirm: null } });
+                    }
+                    setpasswordConfirm(val);
+                  }}
+                />
+              </>
             )}
           </InputWrapper>
+
           <Button
             containerStyle={{ width: `100%`, marginTop: 10 }}
             title={formType === "login" ? `Login` : `Sign Up`}
             type="solid"
             onPress={() => {
               if (formType === "login") {
-                // signinUser({ email, password });
                 handleSignIn();
                 return;
               }
-
-              signupUser({ email, password });
+              handleSignup();
             }}
           />
           <FormFooter>
@@ -211,7 +231,6 @@ export default function App() {
               }
             />
           </FormFooter>
-
           <Button
             containerStyle={{
               width: `100%`,
