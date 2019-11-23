@@ -28,6 +28,7 @@ export default function useFirebaseAuth({ config }) {
       if (user != null) {
         setUser(user);
         authenticate(true);
+        setAuthError(null);
       } else {
         setUser(null);
         authenticate(false);
@@ -68,12 +69,22 @@ export default function useFirebaseAuth({ config }) {
       });
   };
 
+  resetPassword = email => {
+    firebase
+      .auth()
+      .sendPasswordResetEmail(email)
+      .catch(error => {
+        setAuthError({ ...error });
+      });
+  };
+
   return {
     user,
     isAuthenticated,
     signupUser,
     signinUser,
     signoutUser,
+    resetPassword,
     authError
   };
 }

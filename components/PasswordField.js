@@ -39,7 +39,7 @@ const PasswordField = React.forwardRef((props, ref) => {
           height: 40,
           justifyContent: `center`
         }}
-        name={showPassword ? "eye" : "eye-with-line"}
+        name={showPassword ? "eye-with-line" : "eye"}
         type="entypo"
         size={16}
         color={`#2089DC`}

@@ -7,6 +7,7 @@ import useFirebase from "./hooks/useFirebaseAuth";
 import useFormValidator from "./hooks/useFormValidator";
 import firebaseConfig from "./config/firebase";
 import PasswordField from "./components/PasswordField";
+import ResetPassword from "./components/ResetPassword";
 
 const emailRef = React.createRef();
 const passwordRef = React.createRef();
@@ -53,6 +54,11 @@ export default function App() {
   const [password, setPassword] = React.useState();
   const [passwordConfirm, setpasswordConfirm] = React.useState();
   const [formType, setFormType] = React.useState("login");
+  const [
+    forgotPasswordOverlayIsVisible,
+    setForgotPasswordOverlayIsVisible
+  ] = React.useState(false);
+
   const [errors, setErrors] = React.useState({
     email: null,
     password: null,
@@ -66,6 +72,7 @@ export default function App() {
     signupUser,
     signinUser,
     signoutUser,
+    resetPassword,
     authError
   } = useFirebase({
     config: firebaseConfig
@@ -126,11 +133,9 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Icon raised name="user" type="entypo" size={32} color={`#2089DC`} />
-
       <Text style={{ color: `red`, padding: 10 }}>
         {authError && authError.message}
       </Text>
-
       {isAuthenticated && (
         <>
           <Button
@@ -144,7 +149,6 @@ export default function App() {
           />
         </>
       )}
-
       {isAuthenticated == false && (
         <>
           <InputWrapper>
@@ -222,13 +226,26 @@ export default function App() {
             }}
           />
           <FormFooter>
-            <Button type="clear" title="Forgot Password" />
+            <Button
+              type="clear"
+              title="Forgot Password"
+              onPress={() =>
+                setForgotPasswordOverlayIsVisible(
+                  !forgotPasswordOverlayIsVisible
+                )
+              }
+            />
             <Button
               type="clear"
               title={formType === "login" ? `Sign Up` : `Cancel`}
-              onPress={() =>
-                setFormType(formType === "login" ? "signup" : "login")
-              }
+              onPress={() => {
+                setErrors({
+                  email: null,
+                  password: null,
+                  passwordConfirm: null
+                });
+                setFormType(formType === "login" ? "signup" : "login");
+              }}
             />
           </FormFooter>
           <Button
@@ -251,6 +268,16 @@ export default function App() {
           />
         </>
       )}
+
+      <ResetPassword
+        isVisible={forgotPasswordOverlayIsVisible}
+        onCancel={() => setForgotPasswordOverlayIsVisible(false)}
+        onSubmit={email => {
+          setForgotPasswordOverlayIsVisible(false);
+          resetPassword(email);
+          console.log("on reset password");
+        }}
+      />
     </View>
   );
 }
