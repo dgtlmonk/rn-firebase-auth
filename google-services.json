@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "781702222550",
+    "firebase_url": "https://dgtlmonkstudio-d95a8.firebaseio.com",
+    "project_id": "dgtlmonkstudio-d95a8",
+    "storage_bucket": "dgtlmonkstudio-d95a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:781702222550:android:0dc1a770ff1a3abdd4af77",
+        "android_client_info": {
+          "package_name": "dev.dgtlmonk.auth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "781702222550-stkp49p82uqvf3u90dijumqem6na5rs0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWziFkDE0YGh8brIzJpqxuKNnDcvI4SY8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "781702222550-stkp49p82uqvf3u90dijumqem6na5rs0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "781702222550-nb8vl5ggu9fgnh5l0ehejojkioggg0h9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dev.dgtlmonk.auth"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

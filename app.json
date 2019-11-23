@@ -1,0 +1,34 @@
+{
+  "expo": {
+    "name": "firebase-auth",
+    "slug": "firebase-auth",
+    "privacy": "public",
+    "sdkVersion": "35.0.0",
+    "platforms": ["ios", "android"],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "dev.dgtlmonk.auth",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.781702222550-nb8vl5ggu9fgnh5l0ehejojkioggg0h9"
+        }
+      }
+    },
+    "android": {
+      "package": "dev.dgtlmonk.auth",
+      "googleServicesFile": "./google-services.json"
+    }
+  }
+}
