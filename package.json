@@ -5,25 +5,34 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "jest test --watchAll"
   },
   "dependencies": {
     "@react-native-firebase/app": "^6.0.4",
     "@react-native-firebase/auth": "^6.0.4",
+    "@testing-library/react-native": "^5.0.1",
     "expo": "^35.0.0",
     "expo-app-auth": "^7.0.0",
     "expo-google-app-auth": "^7.0.0",
     "expo-google-sign-in": "^7.0.0",
     "firebase": "^7.4.0",
-    "react": "16.8.3",
-    "react-dom": "16.8.3",
+    "react": "16.12.0",
+    "react-dom": "16.12.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
     "react-native-elements": "^1.2.7",
-    "react-native-web": "^0.11.7"
+    "react-native-web": "^0.11.7",
+    "react-test-renderer": "16.12.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^7.1.0",
+    "jest": "^24.9.0",
+    "jest-expo": "^35.0.0",
     "styled-components": "^4.4.1"
+  },
+  "jest": {
+    "verbose": true,
+    "preset": "@testing-library/react-native"
   },
   "private": true
 }
