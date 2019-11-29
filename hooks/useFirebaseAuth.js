@@ -15,12 +15,6 @@ export default function useFirebaseAuth({ config }) {
 
   React.useEffect(() => {
     firebase.initializeApp(config);
-
-    //     try {
-    //   await GoogleSignIn.initAsync({ clientId: '<YOUR_IOS_CLIENT_ID>' });
-    // } catch ({ message }) {
-    //   alert('GoogleSignIn.initAsync(): ' + message);
-    // }
   }, []);
 
   React.useEffect(() => {
@@ -50,9 +44,7 @@ export default function useFirebaseAuth({ config }) {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .catch(error => {
-        console.log("--------");
         console.log(error);
-
         setAuthError({ ...error });
       });
   };

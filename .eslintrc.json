@@ -1,0 +1,19 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true,
+    "react-native/react-native": true
+  },
+  "extends": ["plugin:prettier/recommended"],
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "plugins": ["react", "react-native", "prettier", "react-hooks"],
+  "rules": {
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "prettier/prettier": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  }
+}

@@ -46,8 +46,8 @@ const ErrorStatus = styled(Text)({
   padding: 10
 });
 
-const iosClientID =
-  "com.googleusercontent.apps.781702222550-nb8vl5ggu9fgnh5l0ehejojkioggg0h9";
+// const iosClientID =
+//   "com.googleusercontent.apps.781702222550-nb8vl5ggu9fgnh5l0ehejojkioggg0h9";
 
 export default function App() {
   const [email, setEmail] = React.useState();
@@ -212,7 +212,6 @@ export default function App() {
               </>
             )}
           </InputWrapper>
-
           <Button
             containerStyle={{ width: `100%`, marginTop: 10 }}
             title={formType === "login" ? `Login` : `Sign Up`}
@@ -275,7 +274,6 @@ export default function App() {
         onSubmit={email => {
           setForgotPasswordOverlayIsVisible(false);
           resetPassword(email);
-          console.log("on reset password");
         }}
       />
     </View>
